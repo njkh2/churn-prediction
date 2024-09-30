@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <h1>Customer Churn Prediction</h1>
+    <form id="predictionForm">
+        <input id="CreditScore" placeholder="Credit Score" required><br>
+        <input id="Geography" placeholder="Geography" required><br>
+        <input id="Gender" placeholder="Gender" required><br>
+        <input id="Age" placeholder="Age" required><br>
+        <input id="Tenure" placeholder="Tenure" required><br>
+        <input id="Balance" placeholder="Balance" required><br>
+        <input id="NumOfProducts" placeholder="Num of Products" required><br>
+        <input id="HasCrCard" placeholder="Has Credit Card (1 or 0)" required><br>
+        <input id="IsActiveMember" placeholder="Is Active Member (1 or 0)" required><br>
+        <input id="EstimatedSalary" placeholder="Estimated Salary" required><br>
+        <button type="button" onclick="makePrediction()">Predict</button>
+    </form>
+    <h2 id="result"></h2>
+</body>
+</html>
