@@ -1,30 +1,29 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS
+import pandas as pd
 import joblib
-import numpy as np
 
 app = Flask(__name__)
 
-# Load the pre-trained model
-model = joblib.load('model.pkl')
+# Enable CORS for requests coming from 'http://localhost:3000'
+CORS(app, origins=['http://localhost:3000'])
+
+# Load the saved model and pipeline
+model_pipeline = joblib.load('model.pkl')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.get_json()  # Get data from the frontend
-
-    # Extract features from the request
-    features = np.array([data['CreditScore'], data['Geography'], data['Gender'], data['Age'],
-                         data['Tenure'], data['Balance'], data['NumOfProducts'],
-                         data['HasCrCard'], data['IsActiveMember'], data['EstimatedSalary']])
-
-    # Convert to 2D array for prediction
-    features = features.reshape(1, -1)
-
-    # Predict churn (0 = Not churn, 1 = Churn)
-    prediction = model.predict(features)[0]
-
-    # Send response back to frontend
-    result = "Customer is likely to leave." if prediction == 1 else "Customer is likely to stay."
-    return jsonify({'prediction': result})
+    # Get JSON data from the request
+    json_data = request.json
+    
+    # Convert JSON to DataFrame
+    df = pd.DataFrame([json_data])
+    
+    # Make prediction
+    prediction = model_pipeline.predict(df)
+    
+    # Return the prediction result as JSON
+    return jsonify({'prediction': int(prediction[0])})
 
 if __name__ == '__main__':
     app.run(debug=True)
